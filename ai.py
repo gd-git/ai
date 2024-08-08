@@ -23,6 +23,8 @@ import traceback
 
 from groq import Groq
 
+import container
+
 # Create the Groq client
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
@@ -241,61 +243,83 @@ def main():
         else :
             exit(1)
 
+    auto_question=""
+
     while True:
-        prompt=f"{conf['model']} {config.getContextWindow(conf['model'])}"
-        # Get user input from the console
-        if sys.stdin.isatty():
-            if conf["extend"] :
-                print(f"\n>>> ({prompt}) >>> Ctrl D pour terminer l'entrée, CTRL C pour quitter le programme")
-            else :
-                print(f"\n>>> ({prompt}) >>>")
+        if auto_question == "" :
+            prompt=f"{conf['model']} {config.getContextWindow(conf['model'])}"
+            # Get user input from the console
+            if sys.stdin.isatty():
+                if conf["extend"] :
+                    print(f"\n>>> ({prompt}) >>> Ctrl D pour terminer l'entrée, CTRL C pour quitter le programme")
+                else :
+                    print(f"\n>>> ({prompt}) >>>")
 
-        try:
-            if conf["extend"] :
-                user_input = config.multiInput()
-            else:
-                try :
-                    user_input =input()
-                except EOFError :
-                    continue
+            try:
+                if conf["extend"] :
+                    user_input = config.multiInput()
+                else:
+                    try :
+                        user_input =input()
+                    except EOFError :
+                        continue
 
-        except (KeyboardInterrupt) :
-            whenQuit()
-            exit()
+            except (KeyboardInterrupt) :
+                whenQuit()
+                exit()
+        else :
+            user_input=auto_question
+            auto_question=""
+            print(user_input)
 
         if not user_input:
             continue
 
         #print("user_input :" + user_input)
 
-        print("Query...")
+        print("Send...")
 
         response=ia_request(user_input) 
 
         if response :
             # Save the last response to last_response.txt
-            with open("last_response.txt", "w") as f:
-                f.write(response.choices[0].message.content)
+            last_response=response.choices[0].message.content
+            #with open("last_response.txt", "w") as f:
+            #    f.write(response.choices[0].message.content)
 
             print("------------------------------------------")
             print()
             print(response.choices[0].message.content)
 
+            exec=1
+            if exec == 1 :
+                pattern = r"\$exec\('(.*)', *'(.*)'\)"
+                matches = re.findall(pattern, last_response, re.DOTALL)
+
+                if matches:
+                    user = matches[0][0]
+                    contenu = matches[0][1]
+                    # Recherche sur Internet les IA accessible en ligne gratuitement via une requete lunx -dump
+                    # Recherche sur Internet les IA accessibles par curl
+                    # Recherche sur Internet avec une commande lynx -dump les IA accessibles par l'API curl.
+                    # Crée le fichier /tmp/aaa/f.txt contenant la chaine "Super cool !"
+                    auto_question=container.exec(user, contenu)
         if not sys.stdin.isatty():
             break
 
 # Main
 
 parser = argparse.ArgumentParser(add_help=False,description='Chat with an AI helper')
-parser.add_argument('-a', '--assistant', help='Définir le type d\'assistant')
 parser.add_argument('-c', '--conversation', help='Créer/reprendre une discussion')
 parser.add_argument('-d', '--document', action='append', help='Documents to be loaded')
+parser.add_argument('-g', '--seed', type=int, help='Set the seed for the model')
 parser.add_argument('-h', '--help', action='store_true', help='Show this help message and exit')
 parser.add_argument('-l', '--length_history', type=int, help='Set the length of history') 
 parser.add_argument('-m', '--model', help='Choose a model')
 parser.add_argument('-p', '--program',action='append', help='Program to be loaded')
 parser.add_argument('-q', '--question', help='Ask a question and quit')
-parser.add_argument('-s', '--seed', type=int, help='Set the seed for the model')
+parser.add_argument('-s', '--system', help='Définir le type d\'assistant')
+parser.add_argument('--system-file', help='Définir le type d\'assistant à partir d\'un fichier')
 parser.add_argument('-t', '--temperature', type=float, default=0.1, help='Set the temperature for the model')
 parser.add_argument('-v', '--verbose', action='store_true', help='Affiche des informations supplémentaires')
 parser.add_argument('-x', '--extend', action='store_true', help='Question sur plusieurs lignes (CTRL D) pour finir la question')
@@ -315,11 +339,21 @@ if args.help:
 if args.verbose :
     config.verbose=True
 
-if args.assistant :
-    conf["assistant"]=args.assistant
+if args.system :
+    conf["system"]=args.system
+
+print(args)
+
+if args.system_file :
+    cat=""
+    for file in args.system_file.split(",") :
+        with open(file, 'r') as f:
+            cat=cat+"\n"+f.read()
+    conf["system"]=cat
+
 
 v=vars(args)
-for a in ["assistant", "extend", "model", "temperature", "seed", "length_history", "compress"] :
+for a in ["system", "extend", "model", "temperature", "seed", "length_history", "compress"] :
     if v[a]!=None :
         print(f"a: {a} {v[a]}")
         #print(":",a, "=", v[a])
@@ -334,13 +368,13 @@ print("======", file=sys.stderr)
 
 
 # Set the system prompt
-assistant = {
+system = {
     "role": "system",
-    "content": conf["assistant"]
+    "content": conf["system"]
 }
 
 # Initialize the chat history
-chat_history = [ assistant ]
+chat_history = [ system ]
     
 
 if args.program:

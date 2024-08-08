@@ -27,7 +27,7 @@ chat_history=[]
 
 # Tu afficheras AVANT chaque réponse l'estimation de son taux de fiablité et sa justification.
 
-config["assistant"]="""
+config["system"]="""
 Tu es un assistant utile. 
 Tu es capable d'afficher beaucoup de lignes. 
 Tu répondras avec des réponses courtes. 

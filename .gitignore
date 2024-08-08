@@ -1,5 +1,6 @@
 __pycache__/
 .venv/
+.*
 .requirements_installed
 last_response.txt
 
