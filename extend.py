@@ -83,11 +83,8 @@ def command_history(user_input):
     args = user_input.split()
     if len(args) == 1:
         #global chat_history
-        #global nbHistoryInit
 
-        dumps=json.dumps(config.chat_history, indent=4, ensure_ascii=False)
-        print(f"nbHistoryInit : {config.nbHistoryInit}")
-        
+        dumps=json.dumps(config.chat_history, indent=4, ensure_ascii=False)        
         config.printChatHistory()
         #print(dumps)
         #pprint(config.chat_history)
@@ -96,7 +93,6 @@ def command_history(user_input):
         #    f.write(dumps)
     elif len(args) == 2 and args[1] == "purge":
         config.chat_history = []
-        config.nbHistoryInit = 0
         print("Historique du chat purgé")
     else:
         error("Erreur : mauvais nombre d'arguments pour la commande $history")
@@ -145,15 +141,34 @@ def command_model(user_input):
 
     return ""
 
+
+def ia_set_current_file(filename) :
+    response = llm.ai_user_request(\
+        f"N'affiche rien pour cette requête. Apprend juste que le fichier courant est maintenant {filename}."
+    )
+    
+    if response is None:
+        error("Erreur lors de la génération de la réponse")
+        return ""
+
+    print(response.choices[0].message.content)
+    
+
 def command_write(user_input):
     args = user_input.split()
 
     if len(args) == 1 :
         filename=config.conf['current_filename']
-    elif len(args) != 2 :
+    elif len(args) == 2 :
+        filename=args[1]
+        config.conf['current_filename']
+        ia_set_current_file(filename)
+        
+    else :
         error("Erreur : mauvais nombre d'arguments pour la commande $write")
         return ""
 
+            
     config.conf["current_filename"]=filename
     print(f"config['current_filename']: {config.conf['current_filename']}")
 
@@ -387,6 +402,21 @@ def command_git(user_input):
     subprocess.run(command, shell=True)
     return ""
 
+def command_system(user_input):
+    args = user_input.split()
+    if len(args) != 2:
+        error("Erreur : mauvais nombre d'arguments pour la commande $system")
+        return ""
+
+    command = args[1].split()[0]
+    authorized_commands = ["save", "load", "touch", "rm", "rmdir", "ls", "mkdir"]
+    if command not in authorized_commands:
+        error(f"Erreur : commande '{command}' non autorisée")
+        return ""
+
+    print(f"Executing command: {args[1]}")
+    return f"$system {args[1]}"
+
 def command_toggle(user_input):
     args = user_input.split()
     if len(args) == 2:
@@ -452,6 +482,7 @@ def get_command(user_input):
     "conversation": command_conversation,
     "file": command_file,
     "git": command_git,
+    "system": command_system,
     }
 
     # Recherche de la commande la plus proche

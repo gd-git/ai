@@ -212,7 +212,7 @@ def loadRc() :
         print(f"Load {rcFile}")
         with open(os.path.expanduser(rcFile), 'r') as f:
             rc = json.load(f)
-        print(json.dumps(rc, indent=4, ensure_ascii=False)+"\n")
+        #print(json.dumps(rc, indent=4, ensure_ascii=False)+"\n")
         conf.update(rc)
 
 def saveRc() :

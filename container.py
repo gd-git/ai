@@ -10,10 +10,9 @@ def confirmation():
 
 def exec_raw(user, contenu) :
     command=f"podman exec -u {user} ai bash -c '{contenu}'"
-    #print(f"command : {command}")
-    #subprocess.run(command)
+
     process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    #process.wait()
+    
     stdout, stderr = process.communicate()
 
     #stdout = codecs.iconv('utf-8', stdout, 'utf-8').decode('utf-8')
