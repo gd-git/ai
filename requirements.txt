@@ -2,4 +2,6 @@ argparse
 groq
 python-magic
 requests
+pygments
+filetype
 
