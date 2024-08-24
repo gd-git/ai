@@ -1,12 +1,18 @@
+
 # -*- coding: utf-8 -*-
 # set tabstop=4
 
+import os
+dirname=os.path.dirname(__file__)
+with open(f"{dirname}/imports", 'r') as f:
+    exec(f.read())
+#from tools import error as error  
+def error(msg): tools.error(msg)
+    
 import subprocess
-#import codecs
+import tools
 
-def confirmation():
-    reponse = input("Exécuter ? [Yn] ")
-    return reponse.strip().upper() in ["Y", "O", ""]
+#import codecs
 
 def exec_raw(user, contenu) :
     command=f"podman exec -u {user} ai bash -c '{contenu}'"
@@ -36,7 +42,7 @@ def exec(user, contenu) :
     print("°°°°°°°°°°°°°°°°°°")
     print(contenu)
     print("°°°°°°°°°°°°°°°°°°")
-    if confirmation() :
+    if tools.confirmation() :
         return exec_raw(user, contenu)
     else :
         return "Abandon !"

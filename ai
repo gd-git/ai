@@ -17,6 +17,6 @@ source $DIR_NAME/.venv/bin/activate
 	pip install -r $DIR_NAME/requirements.txt && touch $DIR_NAME/.requirements_installed
 }
 
-python3 $DIR_NAME/ai.py $@
+python3 $DIR_NAME/src/ai.py $@
 
 deactivate

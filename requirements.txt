@@ -3,5 +3,5 @@ groq
 python-magic
 requests
 pygments
+colorama
 filetype
-
