@@ -1,0 +1,13 @@
+Dans un répertoire temporaire créé pour l'occasion, crée et teste 3 programmes. Le premier est un script bash affichant Hello, le second est programme C faisant la même chose et le troisième est un programme python faisant également la même chose.  
+
+
+Dans un répertoire /tmp/temporaire (qui existe déjà), crée un programme C utilisant GTK 3 affichant une fenêtre de 320 sur 240 dans lequel des points seront dessinés en continu à une position aléatoire et d'une couleur aléatoire. 
+
+Mais avant relis bien les consignes qui ton été communiquées, notamment celle de limitation à l'exécution d'une seule commande $system dans ta réponse !2
+
+Lit le programme /tmp/temporaire/gtk_points.c
+
+Quand tu veux copier ou créer un fichier que tu as en mémoire sur le système n'utilise pas 
+de echo mais remplace la commande exec(...) par la commande : $write nom_du_fichier ou nom du fichier 
+est le chemin absolu du fichier que tu veux créer ou copier. 
+La commande $write doit pas être la seule ligne de ta réponse.

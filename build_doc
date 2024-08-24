@@ -1,0 +1,12 @@
+#!/bin/bash
+
+doc="documentation au format markdow avec des chapitres ('#'). Tu ne souligneras pas les chapitres. Tu feras une table des matières"
+
+#out="doc/ai.md"
+#q="Analyse en profondeur le programme ai et génère une $doc ($out) destinée à présenter le programme ai et ses arguments"
+#./ai -f ai,src/ai.py,src/config.py -q "$q" -q '$w '" $out"
+
+out="doc/commands.md"
+q="Analyse le programme extend.py génère une $doc ($out) destinée à présenter les commandes commençant par \$ et leurs sous-commandes"
+./ai -f src/ai.py,src/extend.py -q "$q" -q '$w '" $out"
+

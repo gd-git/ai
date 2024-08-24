@@ -4,6 +4,10 @@ set -eu
 
 PYTHON=python3
 
+if [ ! -d ~/.ai ]; then
+	( umask 077 ~/.ai && mkdir ~/.ai )
+fi
+
 DIR_NAME=$(dirname $(readlink -f $0))
 
 

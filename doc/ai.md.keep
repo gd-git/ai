@@ -1,0 +1,98 @@
+ai.py : Un programme de chat avec un assistant IA
+=====================================================
+
+## Introduction
+---------------
+
+`ai.py` est un programme de chat qui permet d'interagir avec un assistant IA. Il utilise le modèle de langage LLaMA pour générer des réponses à vos questions.
+
+## Arguments
+------------
+
+Le programme `ai.py` accepte les arguments suivants :
+
+### -c, --conversation
+
+*   Définit le fichier de conversation à utiliser.
+*   Exemple : `python ai.py -c conversation.json`
+
+### -f, --file
+
+*   Définit un ou plusieurs fichiers à charger.
+*   Exemple : `python ai.py -f fichier1.txt -f fichier2.txt`
+
+### -h, --help
+
+*   Affiche l'aide et quitte.
+*   Exemple : `python ai.py -h`
+
+### -l, --length_history
+
+*   Définit la longueur de l'historique de conversation.
+*   Exemple : `python ai.py -l 100`
+
+### -m, --model
+
+*   Définit le modèle de langage à utiliser.
+*   Exemple : `python ai.py -m llama-3.1-70b-versatile`
+
+### -o, --option
+
+*   Définit une ou plusieurs options.
+*   Exemple : `python ai.py -o temperature=0.5 -o verbose=True`
+
+### -p, --provider
+
+*   Définit le fournisseur de modèle de langage.
+*   Exemple : `python ai.py -p groq`
+
+### -q, --question
+
+*   Pose une question et quitte.
+*   Exemple : `python ai.py -q "Quel est le sens de la vie ?"`
+
+### -r, --system-file
+
+*   Définit un ou plusieurs fichiers de configuration du système.
+*   Exemple : `python ai.py -r system.json`
+
+### -s, --system
+
+*   Définit le type de système.
+*   Exemple : `python ai.py -s "assistant utile"`
+
+### -t, --temperature
+
+*   Définit la température du modèle de langage.
+*   Exemple : `python ai.py -t 0.5`
+
+### -v, --verbose
+
+*   Active le mode verbose.
+*   Exemple : `python ai.py -v`
+
+### -x, --multi-lines
+
+*   Active le mode multi-lignes pour les questions.
+*   Exemple : `python ai.py -x`
+
+### -z, --compress
+
+*   Active la compression des réponses.
+*   Exemple : `python ai.py -z`
+
+## Exemples d'utilisation
+-------------------------
+
+*   `python ai.py -c conversation.json -m llama-3.1-70b-versatile -t 0.5`
+*   `python ai.py -f fichier1.txt -f fichier2.txt -o verbose=True`
+*   `python ai.py -q "Quel est le sens de la vie ?" -s "assistant utile"`
+
+## Remarques
+-------------
+
+*   Le programme `ai.py` utilise le modèle de langage LLaMA pour générer des réponses.
+*   Le fichier de conversation est utilisé pour stocker l'historique de conversation.
+*   Les options peuvent être définies dans le fichier de configuration du système.
+
+

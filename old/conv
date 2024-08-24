@@ -1,0 +1,65 @@
+{
+    "readline": [
+        "N'affiche rien",
+        "$purge",
+        "N'affiche rien",
+        "N'affiche rien. N demande rien. Tu es silencieux. Apprend que a=\"aaa\"",
+        "N'affiche rien. N demande rien. Tu es silencieux. ",
+        "$purge",
+        "N'affiche rien. Ne demande rien. Tu es silencieux. ",
+        "N'affiche rien. Ne demande rien. ",
+        "Que signifie $$ en shell",
+        "$conf",
+        "$load src/test.py",
+        "$hist",
+        "$con",
+        "$config",
+        "$conf background dark",
+        "Affcihe le code de src/test.py",
+        "Affiche le code de src/test.py",
+        "Affiche le code python de src/test.py",
+        "Affiche le code (```) de src/test.py",
+        "Affiche le code (```python) de src/test.py",
+        "Affiche le code de src/test.py",
+        "$purge",
+        "Affiche le code de src/test.py",
+        "$conf",
+        "Quelle commande linux permet de crer un répertoire"
+    ],
+    "config": {
+        "system": "Tu es un assistant utile",
+        "provider": "groq",
+        "model": "llama-3.1-70b-versatile",
+        "temperature": 0,
+        "seed": "",
+        "current_filename": "",
+        "verbose": false,
+        "debug": false,
+        "multi_lines": false,
+        "ansi": true,
+        "files": [],
+        "background": "dark",
+        "colors_style": "default",
+        "stream": true,
+        "extend": false,
+        "conversation": "conv"
+    },
+    "chat_history": [
+        {
+            "role": "user",
+            "content": "Affiche le code de src/test.py"
+        },
+        {
+            "role": "assistant",
+            "content": "Je suis désolé, mais je n'ai pas accès à un système de fichiers spécifique, donc je ne peux pas afficher le contenu d'un fichier `src/test.py` spécifique.\n\nCependant, je peux vous proposer un exemple de code pour un fichier `test.py` qui pourrait se trouver dans un répertoire `src` :\n```python\n# src/test.py\n\nimport unittest\n\ndef addition(a, b):\n    return a + b\n\nclass TestAddition(unittest.TestCase):\n    def test_addition(self):\n        self.assertEqual(addition(2, 2), 4)\n        self.assertEqual(addition(-1, 1), 0)\n        self.assertEqual(addition(-1, -1), -2)\n\nif __name__ == '__main__':\n    unittest.main()\n```\nCe code définit une fonction `addition` qui prend deux arguments et retourne leur somme. Il définit également une classe `TestAddition` qui hérite de `unittest.TestCase` et contient une méthode `test_addition` qui vérifie que la fonction `addition` fonctionne correctement.\n\nPour exécuter ce code, vous pouvez utiliser la commande `python -m unittest src.test` (en supposant que vous êtes dans le répertoire parent de `src`).\n\nSi vous avez un fichier `src/test.py` spécifique que vous souhaitez afficher, veuillez me fournir plus de contexte ou de détails sur le contenu de ce fichier.\n"
+        },
+        {
+            "role": "user",
+            "content": "Quelle commande linux permet de crer un répertoire"
+        },
+        {
+            "role": "assistant",
+            "content": "La commande Linux pour créer un répertoire est `mkdir`. Voici la syntaxe de base :\n\n```bash\nmkdir nom_du_répertoire\n```\n\nRemplacez `nom_du_répertoire` par le nom que vous souhaitez donner à votre répertoire.\n\nPar exemple, pour créer un répertoire appelé `mon_repertoire`, vous pouvez utiliser la commande suivante :\n\n```bash\nmkdir mon_repertoire\n```\n\nSi vous souhaitez créer un répertoire avec des sous-répertoires, vous pouvez utiliser l'option `-p` :\n\n```bash\nmkdir -p mon_repertoire/sous_repertoire\n```\n\nCette commande créera le répertoire `mon_repertoire` et le sous-répertoire `sous_repertoire` si ils n'existent pas déjà.\n\nVous pouvez également utiliser l'option `-v` pour afficher des messages de confirmation lors de la création des répertoires :\n\n```bash\nmkdir -pv mon_repertoire/sous_repertoire\n```\n\nCette commande créera les répertoires et affichera des messages de confirmation pour chaque répertoire créé.\n"
+        }
+    ]
+}
