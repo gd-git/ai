@@ -58,6 +58,9 @@ Affiche l'historique des conversations avec l'assistant.
 
 * $history purge : purge l'historique des conversations.
 
+### $info
+Affiche "ok".
+
 ### $keys
 Affiche les clés.
 
@@ -194,6 +197,7 @@ def initCommand() :
         "quit": command_exit,
         "purge": command_purge,
         "load": command_open,
+        "info": command_info,
     }
     
     #command_list = list(commands.keys())
@@ -219,29 +223,15 @@ def get_command(user_input):
         error(f"Erreur : commande '{first_word}' inconnue")
         return None
 
-def command_keys(user_input):
-    args = user_input.split()
-    help_message = """
-Aide sur la commande $keys :
-  $keys : affiche les clés
-  $keys next : affiche les clés suivantes
-"""
-    if len(args) == 2 and args[1] in ["help", "h"]:
-        print(help_message)
-        return ""
-    if len(args) == 1:
-        keys.printKeys()
-    elif len(args) == 2 and args[1] == "next":
-        keys.nextKeys()
-    else:
-        error("Erreur : commande $keys inconnue")
-        print(help_message)
-    return ""
+def command_keys(user_input) :
+    return keys.command_keys(user_input)
 
 def command_help(user_input):
     global help_message
     
-    lexer = MarkdownLexer(stripnl=False)
+    lexer = MarkdownLexer() #stripnl=False)
+    #lexer = mistletoe.lexer.MarkdownLexer()
+    
     if config.conf['background'] == "dark" :
         formatter = Terminal256Formatter(fg='dark', bg='light', style=config.conf['colors_style'])
     else :
@@ -294,7 +284,7 @@ Aide sur la commande $history :
             config.chat_history = []
             config.conf['current_filename']=""
             config.conf['files']=[]
-            tools.readline_purge_history()
+            #tools.readline_purge_history()
             save_conversation()            
             print("Historique du chat purgé")
     else:
@@ -318,8 +308,8 @@ Aide sur la commande $config :
         # Si aucun argument n'est fourni, affiche la configuration actuelle
         print(json.dumps(config.conf, indent=4, ensure_ascii=False))
         print("")
-        print("Last chunk:")
-        print(config.last_chunk);
+        #print("Last chunk:")
+        #print(config.last_chunk);
         #for key, value in config.conf.items():
         #    if key != "system":
         #        print(f"{key} {value}")
@@ -482,9 +472,9 @@ def command_set(user_input):
 def command_ls(user_input):
     return alias_helper(user_input, command_file, "file list")
     #return command_file("file list" + " ".join(user_input.split()[1:]))
-    
 
 def command_file(user_input):
+    #print("COMMAND_FILE : {user_input}")
     args = user_input.split()
     help_message = """
 Aide sur la commande $file :
@@ -492,6 +482,7 @@ Aide sur la commande $file :
   $file add <fichier> : ajoute un fichier à la liste des fichiers
   $file save : enregistre le programme/fichier actuel
   $file save <fichier> : enregistre le programme/fichier spécifié
+  $file save <source> <destination> : copie le fichier source vers le chemin de destination
   $file set <fichier> : fixe le fichier courant
   $file open <fichier> : ouvre le fichier spécifié
   $file close : ferme le fichier courant
@@ -513,7 +504,23 @@ Aide sur la commande $file :
         tools.saveFile(filename)
     elif len(args) == 3 and args[1] == "save":
         filename = os.path.expanduser(args[2])
-        tools.saveFile(filename)
+        tools.saveFile(filename, filename)
+    elif len(args) == 4 and args[1] == "save":
+        source = args[2]
+        destination = os.path.expanduser(args[3])
+        #if source in config.conf['files']:
+        #    with open(source, 'rb') as f:
+        #        file_content = f.read()
+        command_file("$file set source")
+        tools.saveFile(source, destination)
+        #try :
+        #    with open(destination, 'wb') as f:
+        #        commande_file("$file set
+        #        f.write(file_content)
+                
+        print(f"Fichier {source} copié vers {destination}")
+        #else:
+        #    error(f"Erreur : fichier {source} non trouvé")
     elif len(args) == 3 and args[1] == "set":
         filename = os.path.expanduser(args[2])
         config.conf['current_filename'] = filename
@@ -531,16 +538,20 @@ Aide sur la commande $file :
         else:
             filename = config.conf['current_filename'] if len(args) == 2 else os.path.expanduser(args[2])
             if filename == "":
-                print("Erreur : aucun fichier courant défini")
+                error("Erreur : aucun fichier courant défini")
             else:
                 tools.closeFile(filename)
+    elif len(args) >= 2 and args[1] == "cd":
+        directory = os.path.expanduser(" ".join(args[2:]))
+        os.chdir(directory)
+        print(f"Répertoire courant changé en {directory}")            
     elif len(args) > 1:
-        print(f"Erreur : sous commande '{args[1]}' inconnue pour la commande $file")
+        error(f"Erreur : sous commande '{args[1]}' inconnue pour la commande $file")
     else:
-        print("Erreur : mauvais nombre d'arguments pour la commande $file")
+        error("Erreur : mauvais nombre d'arguments pour la commande $file")
         print(help_message)
     return ""
-    
+
 def command_git(user_input):
     args = user_input.split()
     help_message = """
@@ -559,7 +570,6 @@ Aide sur la commande $git :
     print(f"Executing command: {command}")
     subprocess.run(command, shell=True)
     return ""
-
 
 def command_toggle(user_input):
     args = user_input.split()
@@ -604,7 +614,7 @@ def load_conversation(file) :
             config.conf['conversation']=file
     except FileNotFoundError:
         # Créer un fichier de conversation valide si celui-ci n'existe pas
-        conv = {"config": config.conf, "chat_history": config.chat_history}
+        conv = {"readline": readline, "config": config.conf, "chat_history": config.chat_history}
         with open(os.path.expanduser(file), 'w') as f:
             json.dump(conv, f, indent=4, ensure_ascii=False)
         print(f"Fichier de conversation créé : {file}")
@@ -699,7 +709,6 @@ def command_purge(user_input):
     return alias_helper(user_input, command_history, "history purge")
     #return command_history("history purge " + " ".join(user_input.split()[1:]))
 
-
 def command_load(user_input):
     return alias_helper(user_input, command_file, "file open")
 
@@ -743,3 +752,20 @@ Aide sur la commande $system :
     print(f"Executing command: {command}")
     return f"Exécute la commande : '{command}'"
 
+def command_info(user_input):
+    args = user_input.split()
+    help_message = """
+Aide sur la commande $info :
+  $info : affiche "ok"
+"""
+    if len(args) == 2 and args[1] in ["help", "h"]:
+        print(help_message)
+        return ""
+
+    print("Last chunk:")
+    print(config.last_chunk)
+    print()
+    print("Last response :")
+    print(config.last_response)
+    
+    return ""

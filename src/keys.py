@@ -12,8 +12,30 @@ keysConf = {
     "keys": [],
     "key": 0
 }
+def command_keys(user_input):
+    args = user_input.split()
+    help_message = """
+Aide sur la commande $keys :
+  $keys : affiche les clés
+  $keys next : affiche les clés suivantes
+  $keys num : sélectionne la clé à l'indice num
+"""
+    if len(args) == 2 and args[1] in ["help", "h"]:
+        print(help_message)
+        return ""
+    if len(args) == 1:
+        keys.printKeys()
+    elif len(args) == 2 and args[1] == "next":
+        keys.nextKeys()
+    elif len(args) == 2 and args[1].isdigit():
+        setKey(int(args[1]))
+    else:
+        error("Erreur : commande $keys inconnue")
+        print(help_message)
+    return ""
 
 
+    
 def loadKeys():
     global keysConf
 
@@ -80,11 +102,9 @@ def setKey(num):
         if num < len(keysConf["keys"]):
             keysConf["key"] = num
         else:
-            print("Erreur : indice invalide")
+            error("Erreur : indice invalide")
     except Exception as e:
-        print(f"Erreur : {e}")
-
-    #initClient
+        error(f"Erreur : {e}")
 
 """
 Ajoutes une clé à la liste des clés keys 

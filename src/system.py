@@ -35,7 +35,7 @@ def system(contenu) :
     print("°°°°°°°°°°°°°°°°°°")
     print(contenu)
     print("°°°°°°°°°°°°°°°°°°")
-    if tools.confirmation() :
+    if tools.confirmation(contenu) :
         return system_raw(contenu)
     else :
         return "Abandon !"
@@ -48,7 +48,7 @@ def write(contenu) :
     print("°°°°°°°°°°°°°°°°°°")
     print(contenu)
     print("°°°°°°°°°°°°°°°°°°")
-    if tools.confirmation() :
+    if tools.confirmation(contenu) :
         return write_raw(contenu)
     else :
         return "Abandon !"

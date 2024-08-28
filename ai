@@ -8,17 +8,18 @@ if [ ! -d ~/.ai ]; then
 	( umask 077 ~/.ai && mkdir ~/.ai )
 fi
 
-DIR_NAME=$(dirname $(readlink -f $0))
+export DIR_NAME=$(dirname $(readlink -f $0))
 
 
-[ ! -e $DIR_NAME/.venv/ok ] && {
-	$PYTHON -m venv $DIR_NAME/.venv && touch $DIR_NAME/.venv/ok
+[ ! -e ~/.ai/venv_ok ] && {
+	$PYTHON -m venv $DIR_NAME/.venv && touch ~/.ai/venv_ok
+	#$DIR_NAME/.venv/ok
 }
 
 source $DIR_NAME/.venv/bin/activate
 
-[ ! -e $DIR_NAME/.requirements_installed ] && {
-	pip install -r $DIR_NAME/requirements.txt && touch $DIR_NAME/.requirements_installed
+[ ! -e  ~/.ai/requirements_ok ] && {
+	pip install -r $DIR_NAME/requirements.txt && touch ~/.ai/requirements_ok
 }
 
 python3 $DIR_NAME/src/ai.py $@

@@ -4,3 +4,4 @@ python-magic
 requests
 pygments
 colorama
+pyaudio

@@ -42,7 +42,7 @@ def exec(user, contenu) :
     print("°°°°°°°°°°°°°°°°°°")
     print(contenu)
     print("°°°°°°°°°°°°°°°°°°")
-    if tools.confirmation() :
+    if tools.confirmation(contenu) :
         return exec_raw(user, contenu)
     else :
         return "Abandon !"

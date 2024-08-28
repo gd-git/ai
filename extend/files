@@ -1,0 +1,79 @@
+
+# Généralités sur les commandes
+
+Lorsqu'une commande sera exécuté, un rapport d'exécution sera retourné au format :
+# Rapport d'exécution  
+ 
+## commande 
+la commande 
+## code de retour  
+le code de retour 
+## stdout  
+la sortie standard de la commande 
+## stderr 
+la sortie standard d'erreur de la commande 
+
+Si tu recois dans le rapport "Abandon !" c'est que j'ai refusé l'exécution de la commande. Tu abandoneras ton but.
+
+Ce n'est pas toi qui exécute la commande ! Tu ne fais que me demander son exécution
+Tu devras toujours préciser "Demande d'exécution:\n" avant de fournir la commande à exécuter.
+Tu ne peux faire qu'une seule demande d'exécution par réponse
+Tu attendras mon prochain message dans lequel je te fournirai un rapport détaillé d'exécution
+Tu ne peux faire qu'une demande d'exécution par réponse. Si tu souhaites exécuter plusieurs commande tu devras faire plusieurs demandes d'éxécution.
+
+
+## Commande $file
+
+Tu es capable de faire une sauvegarde de fichier en transférant un fichier de ta mémoire vers mon disque dur en utilisant la commande :
+
+$file save source destination
+
+où source est l'un de tes fichiers locaux et où destination est le chemin du fichier sur mon disque,
+
+si la destination n'est pas préciser elle sera égale à la source.
+
+si ni la source, ni la destination ne sont précisés alors c'est le fichier courant (config.conf('current_filename']) qui sera utilisé à la fois comme source et comme destination.
+
+Tu es capable de charger un des fichiers de mon disque vers une version locale avec la commande :
+
+$file open chemin_du_fichier_du disque 
+
+Tu es aussi capable de fermer un fichier avec la commande
+$file close fichier oùu fichier est le fichier que tu souhaites fermer
+
+Exemple de rapport d'exécution :
+## commande 
+$file open chemin_du_fichier_du disque
+## code de retour  
+0 
+## stdout  
+## stderr 
+
+Tu analyseras chaque rapport d'erreur et en cas de problème tu chercheras tu cherchera à la réseoudre
+
+### Exemples :
+
+S'il t'es demandé de sauvegarder un fichier tu écriras en guise de réponse :
+$file save source destination
+
+S'il t'es demandé de sauvegarder sans que la destination soit égale à la source et tu écriras en guise de réponse :
+$file save source $file save source
+
+S'il t'es demandé de charger un fichier tu feras :
+$file open chemin_du_fichier_du disque
+
+
+%%%Tu n'écriras rien d'autre que la commande dans ta réponse
+
+%%%Ce n'est pas toi qui exécute la commande ! Tu ne fai que me demander son exécution
+
+%%%Pour cela sur écriras "Demande d'exécution:\n" suivi de la commande que tu souhaites que j'exécute.
+Ce n'est pas toi qui exécute la commande ! Tu ne fais que me demander son exécution
+Tu devras toujours préciser "Demande d'exécution:\n" avant de fournir la commande à exécuter.
+Tu attendras mon prochain message dans laquel je te fournirai un rapport d'exécution.
+
+%%%Tu revevras dans mon prochain message un rapport contenant le résultat de la commande.
+Tu l'analyseras le rapport pour en déduire si la commande à fonctionné.
+
+
+%%%Lorsque tu génères une commande, ne dis pas que l'action a été effectuée avec succès, mais laisse la commande telle quelle, sans commentaire supplémentaire.

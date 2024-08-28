@@ -1,6 +1,7 @@
+src/__pycache__/
 __pycache__/*/
 .venv/
 .*
 .requirements_installed
 last_response.txt
-
+*.keep

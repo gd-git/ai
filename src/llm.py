@@ -55,6 +55,15 @@ class Provider():
     def getContextWindow(self, model):
         raise NotImplementedError("Cette méthode doit être implémentée par la classe fille")
 
+    def chunk_to_ANSI(text) :
+        
+        regexp = r"\033\[(\d+)(;\d+)*m"
+
+        if re.search(regexp, texte):
+            print("Le texte contient des codes ANSI")
+        else:
+            print("Le texte ne contient pas de codes ANSI")
+
     def chat(self, model, messages, seed, temperature):
         global markdownLexer, formatter
         global cumul, context
@@ -63,7 +72,8 @@ class Provider():
         streamConf=config.conf['stream']
         #stream=False
         #max_tokens=8000,
-
+        tools.verbose(f"CHAT QUESTION")
+        print("Sending...");
         #print(f"CHAT QUESTION: {json.dumps(messages,indent=4, ensure_ascii=False)}")
         #print("START")
 
@@ -107,7 +117,14 @@ class Provider():
                 #stream.collectAndPrint(chunk.choices[0].delta.content)
                 #print(colors.add_chunk(chunk.choices[0].delta.content), end='')
                 #, llm.markdownLexer, llm.formatter
+
                 print(add_chunk(chunk.choices[0].delta.content), end='')
+
+                #code=pygments.highlight(chunk.choices[0].delta.content, llm.markdownLexer, llm.formatter)
+                #print(code, end='')
+
+
+                #print(json.dumps(add_chunk(chunk.choices[0].delta.content), indent=4, ensure_ascii=False), end='')
                 #time.sleep(0.1)
 
             # To flush last line
@@ -305,10 +322,16 @@ def add_chunk(chunk):
         #print(f"N CODE: {len(code)}")
         #print("CODE:")
         #print('\n'.join(code))
-        line=code[-3]
+        try :
+            line=code[-3]
+        except :
+            line=""
         #print(f"LINE : {line}")
         resultats.append(line+'\n')
 
     cumul=lines[-1]
+
+    # Remplace les code ANSI
+    # ...
     
     return ''.join(resultats)

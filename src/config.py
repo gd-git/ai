@@ -12,6 +12,8 @@ warnings.simplefilter("ignore",category=Warning)
 args=[]
 rcFile="~/.ai/airc"
 
+last_error=""
+
 # Dictionnaire pour stocker les configurations
 
 conf = {}
@@ -19,6 +21,42 @@ conf = {}
 chat_history=[]
 last_response=""
 backup_filename=""
+
+os.environ['PYAUDIO_DEBUG'] = '0'
+
+analyse=True
+
+# Rediriger la sortie standard vers /dev/null
+#sys.stdout = open(os.devnull, 'w')
+#sys.stderr = open(os.devnull, 'w')
+
+# Sauvegarder les descripteurs de fichiers originaux
+#stdout_fd = sys.stdout.fileno()
+#stderr_fd = sys.stderr.fileno()
+
+# Rediriger les sorties standard et d'erreur vers /dev/null
+#os.dup2(os.open(os.devnull, os.O_RDWR), 1)
+#os.dup2(os.open(os.devnull, os.O_RDWR), 2)
+
+# Appeler pyaudio.PyAudio()
+
+#audio = pyaudio.PyAudio()
+#print("\n")
+
+# Restaurer les sorties standard et d'erreur
+#os.dup2(stdout_fd, 1)
+#os.dup2(stderr_fd, 2)
+
+# Fermer les descripteurs de fichiers originaux
+#os.close(stdout_fd)
+#os.close(stderr_fd)
+
+
+
+# Rétablir les sorties standard et d'erreur
+#sys.stdout = sys.__stdout__
+#sys.stderr = sys.__stderr__
+
 
 # Tu afficheras AVANT chaque réponse l'estimation de son taux de fiablité et sa justification.
 
@@ -72,9 +110,6 @@ def init() :
     if config.args.debug :
         config.conf["debug"]=True
 
-    if config.args.verbose :
-        config.conf["verbose"]=True
-
     if config.args.system :
         config.conf["system"]=' '.join(config.args.system)        
 
@@ -116,7 +151,7 @@ def init() :
                 for file in l.split(",") :
                     if file == "" :
                         continue
-                    if not os.path.exists(file):
+                    if not os.path.exists(file) and 1==0:
                         print(f"Erreur : le fichier '{file}' n'existe pas.")
                         exit(1)
             for l in config.args.file:
@@ -128,8 +163,13 @@ def init() :
     if config.args.extend : 
         config.conf["extend"] = True
 
-    if not config.args.system:
-        extend.initSystem()
+
+    if config.args.verbose :
+        config.conf["verbose"]=True
+    else :
+        config.conf["verbose"]=False
+
+    extend.initSystem()
     
 def printChatHistory() :
     global chat_history
@@ -165,6 +205,7 @@ def parseArgs() :
     parser.add_argument('-l', '--multi-lines', action='store_true', help='Question sur plusieurs lignes (CTRL D) pour finir la question')
     parser.add_argument('-x', '--extend', action='store_true', help='Mode étendu (extend/extend')
     parser.add_argument('-z', '--raz', action='store_true', help='Supprime le fichier ~/.ia-conversation')
+    parser.add_argument('-V', '--version', action='store_true', help='Afficher la configuration')
 
     args = parser.parse_args()
     return args
@@ -195,6 +236,3 @@ def printToStderr() :
             print(f"{var}=\"{value}\"", file=sys.stderr)
         else :
             print(f"{var}={value}", file=sys.stderr)
-
-
-

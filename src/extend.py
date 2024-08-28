@@ -8,47 +8,56 @@ with open(f"{dirname}/imports", 'r') as f:
 #from tools import error as error  
 def error(msg): tools.error(msg)
 
+def load_files(list_file):
+    dirname = os.environ.get('DIR_NAME')
+    dirname=os.path.expanduser(dirname)
+    rcname=os.path.expanduser("~/.ai/")
+    
+    def read_file(file):
+        file=file.replace("//", "/")
+        tools.verbose(f"readfile list: {file}")
+        content = ""
+        
+        with open(file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('%'):
+                    #print(f"ACCEPT : {file} : {line}")
+                    content += line + "\n"
+                elif line and line.startswith('#'):
+                    nop=1
+                    #print(f"REJECT : {file} : {line}")
+        return content
 
-"""
-Contraintes sur initSystem
+    list_file=list_file.replace("//", "/")
+    tools.verbose(f"Load system : {list_file}")
+    content = read_file(list_file)
 
-Si -s est précisée ne rien faire
+    final_content = ""
+    for file in content.splitlines():
+        #tools.verbose(f"   file: {file}")
+        filename =rcname+"/extend/"+file
+        if not os.path.exists(filename) :
+            filename=dirname+"/extend/"+file
+            
+        #print(f"File : {filename}")
+        
+        final_content += read_file(filename)
 
-Si ni l'option -s, ni l'option -x ne sont pas précisées alors config.conf['system'] est initialisé avec la concaténation des fichiers précisés dans extend/basic.list
+    return final_content
 
-Si l'option -x est précisé alors config.conf['system'] est initialisé avec la concaténation des fichiers
-précisés dans extend/extend.list
-
-"""
 def initSystem():
+    dirname = os.environ.get('DIR_NAME')
+    dirname=os.path.expanduser(dirname)
+    rcname=os.path.expanduser("~/.ai/")
 
-    if config.args.extend:
-        # Si l'option -x est précisée, initialiser config.conf['system'] avec la concaténation des fichiers précisés dans extend/extend
-        files = []
-        print("Load system : extend/extend.list")
-        with open("extend/extend/list", 'r') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#'):
-                    files.append(line)
-        content = ""
-        for file in files:
-            print(f"File : {file}")
-            with open("extend/"+file, 'r') as f:
-                content += f.read() + "\n"
-        config.conf['system'] = content
+    if config.conf['extend'] == True :
+        list_file =rcname+"/extend/extend.list"
+        if not os.path.exists(list_file):
+            list_file = dirname+"/"+"extend/extend.list"
     else:
-        # Si ni l'option -s, ni l'option -x ne sont précisées, initialiser config.conf['system'] avec la concaténation des fichiers précisés dans extend/basic
-        files = []
-        print("Load system : extend/basic.list")
-        with open("extend/basic.list", 'r') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#'):
-                    files.append(line)
-        content = ""
-        for file in files:
-            print(f"File : {file}")
-            with open("extend/"+file, 'r') as f:
-                content += f.read() + "\n"
-        config.conf['system'] = content
+        list_file =rcname+"/extend/basic.list"
+        if not os.path.exists(list_file):
+            list_file = dirname+"/"+"extend/basic.list"
+
+    config.conf['system'] = load_files(list_file)
