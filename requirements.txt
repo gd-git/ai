@@ -1,7 +1,12 @@
 argparse
 groq
+openai
+ollama
+numpy
+langdetect
 python-magic
 requests
 pygments
 colorama
 pyaudio
+

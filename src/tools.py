@@ -72,12 +72,12 @@ def loadFile(fileName, test=False) :
     parsed_url=urlparse(fileName)
     cache_dir="~/.ai/cache"
 
-    print("Schéma :", parsed_url.scheme)
-    print("Hôte :", parsed_url.netloc)
-    print("Chemin :", parsed_url.path)
-    print("Paramètres :", parsed_url.params)
-    print("Query :", parsed_url.query)
-    print("Fragment :", parsed_url.fragment)
+    #print("Schéma :", parsed_url.scheme)
+    #print("Hôte :", parsed_url.netloc)
+    #print("Chemin :", parsed_url.path)
+    #print("Paramètres :", parsed_url.params)
+    #print("Query :", parsed_url.query)
+    #print("Fragment :", parsed_url.fragment)
 
 
     if parsed_url.netloc != "" :
