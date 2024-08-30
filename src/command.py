@@ -614,7 +614,7 @@ def load_conversation(file) :
             config.conf['conversation']=file
     except FileNotFoundError:
         # Créer un fichier de conversation valide si celui-ci n'existe pas
-        conv = {"readline": readline, "config": config.conf, "chat_history": config.chat_history}
+        conv = {"readline": [], "config": config.conf, "chat_history": config.chat_history}
         with open(os.path.expanduser(file), 'w') as f:
             json.dump(conv, f, indent=4, ensure_ascii=False)
         print(f"Fichier de conversation créé : {file}")

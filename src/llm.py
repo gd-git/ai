@@ -197,7 +197,8 @@ class OllamaProvider(Provider):
         try :
             ollama,host,port = provider.split(':')
         except :
-            error(f"Bad specification: {provider}")
+            pass
+            #error(f"Bad specification: {provider}")
 
         
         print(f"ollama: {ollama} host: {host} port: {port}")
@@ -218,7 +219,10 @@ class OllamaProvider(Provider):
             
     def getContextWindow(self, model):
         #embeddings = self.client.embeddings(model=model, prompt="test")
-        return None
+        #curl http://localhost:11434/api/show -d '{
+        #  "name": "llama3"
+        #  }'
+        return 4096
 
 def ai_user_request(user_input, ai_extend_request=None) :
     global provider

@@ -14,12 +14,12 @@ import colorama
 from colorama import init, Fore, Back, Style
 
 import numpy as np
-import pyaudio
+#import pyaudio
 
 import argparse
 import copy
 import json
-import langdetect
+#import langdetect
 import magic
 import ollama
 import os
@@ -37,7 +37,6 @@ import mimetypes
 import stat
 import time
 import glob
-import pyaudio
 from urllib.parse import urlparse
 
 import config

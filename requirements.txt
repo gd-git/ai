@@ -3,10 +3,10 @@ groq
 openai
 ollama
 numpy
-langdetect
+#langdetect
 python-magic
 requests
 pygments
 colorama
-pyaudio
+#pyaudio
 

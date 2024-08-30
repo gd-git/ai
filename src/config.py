@@ -72,7 +72,7 @@ Tu répondras en français !
 conf["system"]=system
 
 conf['provider']="groq"
-conf["model"]="llama-3.1-70b-versatile"
+#conf["model"]="llama-3.1-70b-versatile"
 conf["temperature"]=0
 conf["seed"]=""
 conf["current_filename"]=""
