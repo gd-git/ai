@@ -177,7 +177,7 @@ class GroqProvider(Provider):
         for m in self.models["data"] :
             if m["id"] == model :
                 return m["context_window"]
-        return None
+        return -1
 
     def initClient(self) :
         #print(f"Groq initClient")
