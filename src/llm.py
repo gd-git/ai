@@ -239,6 +239,7 @@ def ai_user_request(user_input, ai_extend_request=None) :
         return ""
 
     config.chat_history.append({"role": "user", "content": user_input}) 
+    config.chat_history.append({"role": "assistant", "content": "Commande inachvée !"})
     
     if config.conf["seed"] :
         seed=config.conf["seed "]
@@ -276,7 +277,7 @@ def ai_user_request(user_input, ai_extend_request=None) :
         config.conf['current_filename']=filename
         #print(f"DEBUG ai_user_request : Set current_filename: {config.conf['current_filename']}")
 
-
+    config.chat_history.pop()
     config.chat_history.append({"role": "assistant", "content": responseMsg})
     command.save_conversation()
     return response

@@ -31,7 +31,7 @@ def system_raw(contenu) :
     
 
     command=f"bash -c '"+command+"'"
-    print(f"EXECUTION CMD RAW: {command}")
+    #print(f"EXECUTION CMD RAW: {command}")
     process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
     stdout, stderr = process.communicate()
@@ -141,7 +141,7 @@ def analyse_response(auto_question, user_input) :
                 
         elif "$system" in cmd :
 
-            command=f"{cmd}"
+            #command=f"{cmd}"
             #print(f"CMD RAW: {command}")
 
             #match=re.match('^ *$system\((.*)\)$', command)
