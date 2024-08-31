@@ -153,6 +153,7 @@ class Provider():
 class GroqProvider(Provider):
     def __init__(self):
         super().__init__()
+
         #self.api_key = os.environ.get("GROQ_API_KEY")
         
         self.url = "https://api.groq.com/openai/v1/"

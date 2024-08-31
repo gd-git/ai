@@ -62,6 +62,8 @@ def loadKeys():
             key=os.getenv('GROQ_API_KEY')
             if key != "" :
                 addKeys(key)
+            else :
+                error("GROQ_API_KEY empty !")
             
     except json.JSONDecodeError:
         print("Erreur : fichier de configuration mal formé")

@@ -73,15 +73,17 @@ def get_stdin() :
         BACK=f"{Back.LIGHTWHITE_EX}"
     
     prompt = (
-        BACK + FORE + config.conf['provider'] + " "
+        '\n>>> '
+        +BACK + FORE 
+        + FORE + "stream :" + str(config.conf['stream']) + ", "
+        + FORE + "extend :" + str(config.conf['extend']) + ", "
+        + FORE + "multi_lines :" + str(config.conf['multi_lines'])+" "
+        +'\n>>> '
+        + config.conf['provider'] + " "
         + Fore.LIGHTBLUE_EX + config.conf['model'] + " "
         + size_color + str(hist_size)+"/"+str(ctx_num) + " "
         + FORE + "[" + config.conf['current_filename'] + "] "
-        + FORE + "stream :" + str(config.conf['stream']) + ", "
-        + FORE + "extend :" + str(config.conf['extend']) + ", "
-        + FORE + "multi_lines :" + str(config.conf['multi_lines']) 
         + Style.RESET_ALL
-        
     )
 
     #print(f"+++ stdout flush config.conf['current_filename']: {config.conf['current_filename']}")
