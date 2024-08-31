@@ -174,10 +174,23 @@ class GroqProvider(Provider):
         
     def getContextWindow(self, model) :
         #print(self.models)
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
         for m in self.models["data"] :
             if m["id"] == model :
                 return m["context_window"]
         return -1
+=======
+=======
+>>>>>>> Stashed changes
+        try :
+            for m in self.models["data"] :
+                if m["id"] == model :
+                    return m["context_window"]
+        except :
+            return 4096
+        return None
+>>>>>>> Stashed changes
 
     def initClient(self) :
         #print(f"Groq initClient")
