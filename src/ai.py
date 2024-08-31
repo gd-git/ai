@@ -49,12 +49,17 @@ def get_stdin() :
     hist_size_bytes = sys.getsizeof(json.dumps(config.chat_history))
     hist_size = tools.taille_en_octets_humaine(hist_size_bytes)
 
-    ctx_num_byte=llm.provider.getContextWindow(config.conf['model'])
-    ctx_num=tools.taille_en_octets_humaine(ctx_num_byte)
+    try :
+        ctx_num_byte=llm.provider.getContextWindow(config.conf['model'])
+        ctx_num=tools.taille_en_octets_humaine(ctx_num_byte)
+    except Exception as e:
+        traceback.print_exc()
+        #print(f"Erreur : {e}")
 
+        exit(1)
 
     max_size=50*1024; # max before red
-    size_color=Fore.YELLOW
+    size_color=Fore.GREEN
     if hist_size_bytes > max_size or hist_size_bytes*100/ctx_num_byte > 80 :
         # beep ?
         tools.beep()
@@ -72,8 +77,9 @@ def get_stdin() :
         + Fore.LIGHTBLUE_EX + config.conf['model'] + " "
         + size_color + str(hist_size)+"/"+str(ctx_num) + " "
         + FORE + "[" + config.conf['current_filename'] + "] "
-        + FORE + "stream:" + str(config.conf['stream']) + ", "
-        + FORE + "extend:" + str(config.conf['extend']) + ", "
+        + FORE + "stream :" + str(config.conf['stream']) + ", "
+        + FORE + "extend :" + str(config.conf['extend']) + ", "
+        + FORE + "multi_lines :" + str(config.conf['multi_lines']) 
         + Style.RESET_ALL
         
     )
@@ -82,7 +88,7 @@ def get_stdin() :
     #sys.stdout.flush()
     if sys.stdin.isatty():
         if config.conf["multi_lines"] == "True" or config.conf["multi_lines"] == True :
-            print(f">>> {prompt} >>> Ctrl D pour terminer l'entrée")
+            print(f">>> {prompt} >>> Ctrl D")
         else :
             print(f">>> {prompt} >>>")
 
