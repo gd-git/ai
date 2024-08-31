@@ -31,7 +31,7 @@ def system_raw(contenu) :
     
 
     command=f"bash -c '"+command+"'"
-    #print(f"EXECUTION CMD RAW: {command}")
+    print(f"EXECUTION CMD RAW: {command}")
     process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
     stdout, stderr = process.communicate()
@@ -145,7 +145,7 @@ def analyse_response(auto_question, user_input) :
             #print(f"CMD RAW: {command}")
 
             #match=re.match('^ *$system\((.*)\)$', command)
-            match=re.search("system\('(.*)'\)$", command)
+            match=re.search("^.*\$system\([\" '](.*)[\" ']\)$", command)
             
             #print(f"MATCH : {match}")
 
@@ -154,10 +154,11 @@ def analyse_response(auto_question, user_input) :
                 
                 report=auto_report
                 verbose("RETURN $system invalide system_raw")
-                verbose(report, "")
+                verbose(report)
                 
             command=match.group(1)
-            #print(f"CMD EXTRACT: {command}")
+            
+            print(f"CMD EXTRACT: {command}")
             
             #tools.red("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             tools.red(command)
