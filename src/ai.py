@@ -81,6 +81,7 @@ def get_stdin() :
         +'\n>>> '
         + config.conf['provider'] + " "
         + Fore.LIGHTBLUE_EX + config.conf['model'] + " "
+        + FORE + config.conf['conversation'] + " "
         + size_color + str(hist_size)+"/"+str(ctx_num) + " "
         + FORE + "[" + config.conf['current_filename'] + "] "
         + Style.RESET_ALL

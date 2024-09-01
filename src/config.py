@@ -134,8 +134,8 @@ def init() :
         file=os.path.expanduser(config.args.conversation)
         command.command_conversation(f"conversation load {file}")
     else :
-        file = os.path.expanduser("~/.ai/last_conversation")
-        command.command_conversation("conversation load ~/.ai/last_conversation")
+        file = "noname"
+        command.command_conversation(f"conversation load {file}")
 
     if config.args.raz :
         command.command_history("$history purge")

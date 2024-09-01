@@ -145,7 +145,8 @@ def analyse_response(auto_question, user_input) :
             #print(f"CMD RAW: {command}")
 
             #match=re.match('^ *$system\((.*)\)$', command)
-            match=re.search("^.*\$system\([\" '](.*)[\" ']\)$", command)
+
+            match=re.search("^.*\$system\([\" '](.*)[\" ']\)$", cmd)
             
             #print(f"MATCH : {match}")
 

@@ -279,7 +279,7 @@ def ai_user_request(user_input, ai_extend_request=None) :
 
     config.chat_history.pop()
     config.chat_history.append({"role": "assistant", "content": responseMsg})
-    command.save_conversation()
+    conversation.save_conversation()
     return response
     
 def initProvider(p) :
