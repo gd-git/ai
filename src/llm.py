@@ -80,6 +80,7 @@ class Provider():
         report=None
         
         try :
+            #print(f"api_key : {self.api_key}")
             report=self.client.chat.completions.create(
                 model=model,
                 messages=messages,
@@ -154,8 +155,7 @@ class GroqProvider(Provider):
     def __init__(self):
         super().__init__()
 
-        #self.api_key = os.environ.get("GROQ_API_KEY")
-        
+        self.api_key = os.environ.get("GROQ_API_KEY")
         self.url = "https://api.groq.com/openai/v1/"
         self.initModels()
         #self.initClient()
@@ -184,13 +184,24 @@ class GroqProvider(Provider):
         return None
 
     def initClient(self) :
-        #print(f"Groq initClient")
-        #print(f"Groq initClient {self.api_key}")
         self.client = Groq(api_key=self.api_key)
-        #print(f"Groq client {self.client}")
     
 
-
+class ReplicateProvider(GroqProvider):
+    def __init__(self, provider):
+        
+        super().__init__()
+        config.conf['model']="meta/meta-llama-3-70b-instruct"
+        self.api_key = os.environ.get("REPLICATE_API_TOKEN")
+        self.url = "https://openai-proxy.replicate.com/v1"
+        self.initModels()
+        #self.initClient
+        
+    def initClient(self) :
+        self.client = OpenAI(api_key=self.api_key,
+            base_url="https://openai-proxy.replicate.com/v1",
+        )
+        
 class OllamaProvider(Provider):
     def __init__(self, provider):
         super().__init__()
@@ -290,6 +301,8 @@ def initProvider(p) :
         provider=GroqProvider()
     elif  p.startswith("ollama") :
         provider=OllamaProvider(p)
+    elif p.startswith("replicate") :
+        provider=ReplicateProvider(p)    
     else :
         error("Provider non géré !")
         exit(1)
@@ -302,7 +315,7 @@ def initProvider(p) :
         
     keys.loadKeys()
     #print(f"initProvider setKey : {keys.keysConf}")
-    provider.setKey(keys.keysConf['keys'][keys.keysConf['key']])
+    #provider.setKey(keys.keysConf['keys'][keys.keysConf['key']])
     provider.initClient()
     provider.initModels()
 

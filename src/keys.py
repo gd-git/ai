@@ -43,9 +43,10 @@ def loadKeys():
         return
         
     #print("Load keys...")
-    try:
+
         filename = f"~/.ai/keys-{config.conf['provider']}"
         filename=os.path.expanduser(filename)
+        print(f"os.path.expanduser({filename})")
         if os.path.exists(filename):
             if os.stat(filename).st_mode & stat.S_IRUSR != stat.S_IRUSR:
                 print("Erreur : fichier de configuration non lisible")
@@ -53,20 +54,26 @@ def loadKeys():
             if os.stat(filename).st_mode & stat.S_IWUSR != stat.S_IWUSR:
                 print("Erreur : fichier de configuration non modifiable (chmod)")
                 return
-        with open(filename, 'r') as f:
-            keysConf = json.load(f)
-    except FileNotFoundError:
-        print("Warning : fichier de configuration des clés non trouvé")
-
-        if config.conf['provider'] == "groq" :
+            with open(filename, 'r') as f:
+                keysConf = json.load(f)
+            return
+        elif config.conf['provider'] == "groq" :
             key=os.getenv('GROQ_API_KEY')
             if key != "" :
                 addKeys(key)
             else :
                 error("GROQ_API_KEY empty !")
-            
-    except json.JSONDecodeError:
-        print("Erreur : fichier de configuration mal formé")
+            return
+                
+        elif config.conf['provider'] == "replicate" :
+            key=os.getenv('REPLICATE_API_TOKEN')
+            print("REPLICATE_API_TOKEN")
+            if key != "" :
+                print("addKeys : {key}")
+                addKeys(key)
+            else :
+                error("REPLICATE_API_TOKEN empty !")
+            return
 
 """
 saveKeys sauvegarde la variable globale keysConf dans le fichier de configuration
